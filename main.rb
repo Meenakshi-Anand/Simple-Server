@@ -2,7 +2,7 @@ require_relative 'framework'
 require_relative 'db'
 require_relative 'queries'
 
-DB = Databse.connect('postgres://localhost/framework_dev',QUERIES)
+DB = Database.connect('postgres://localhost/framework_dev',QUERIES)
 
 APP = App.new do
 

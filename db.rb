@@ -1,6 +1,6 @@
 require 'pg'
 
-class Databse
+class Database
 
   def initialize(pg_conn,queries)
     @pg_conn = pg_conn
@@ -17,8 +17,21 @@ class Databse
   end
 
   def method_missing(name , *args)
-    sql = @queries.fetch(name) % args
-    exec_sql(sql)
+    sql = @queries.fetch(name)
+    @pg_conn.exec_params(sql,args).to_a.map do |row|
+      Record.new(row)
+    end
+  end
+
+  class Record
+    def initialize(row)
+      @row = row
+    end
+
+
+    def method_missing(col_name)
+      @row.feetch(col_name.to_s)
+    end
   end
 
 end
